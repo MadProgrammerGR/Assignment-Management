@@ -8,31 +8,27 @@ CREATE TABLE users (
 );
 
 CREATE TABLE professors (
-	id int unique references users(id),
+	id int unique references users(id) on delete cascade,
 	first_name varchar(40) not null,
 	last_name varchar(40) not null
 );
 
 CREATE TABLE students (
-	id int unique references users(id),
+	id int unique references users(id) on delete cascade,
 	first_name varchar(40) not null,
 	last_name varchar(40) not null
 );
 
-CREATE TABLE groups (
-	id serial primary key
-);
-
 CREATE TABLE group_members (
-	group_id int references groups(id),
-	student_id int references students(id)
+	group_id serial,
+	student_id int references students(id) on delete cascade
 );
 
 CREATE TABLE assignments (
 	id serial primary key,
 	title varchar(50) not null,
 	description varchar(200),
-	professor_id int references professors(id),
+	professor_id int references professors(id) on delete cascade,
 	max_grade int not null,
 	max_group_size int
 	--create_date date,
@@ -40,8 +36,8 @@ CREATE TABLE assignments (
 );
 
 CREATE TABLE assignment_groups (
-	assignment_id int references assignments(id),
-	group_id int references groups(id),
+	assignment_id int references assignments(id) on delete cascade,
+	group_id int,
 	file bytea,
 	grade int
 );
@@ -64,9 +60,7 @@ INSERT INTO students (id, first_name, last_name) VALUES
 (2, 'LLLL', 'lllll'),
 (3, 'terte', 'papsda');
 
-INSERT INTO groups (id) VALUES (1); --new group
 INSERT INTO group_members (group_id, student_id) VALUES (1, 1), (1, 3);
-INSERT INTO groups (id) VALUES (2); --new group
 INSERT INTO group_members (group_id, student_id) VALUES (2, 2);
 
 
