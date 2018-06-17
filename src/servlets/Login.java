@@ -14,10 +14,6 @@ import database.Accounts;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("login.jsp").forward(request, response);
-	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
@@ -38,7 +34,7 @@ public class Login extends HttpServlet {
 		session.setAttribute("user_info", user);
 		session.setMaxInactiveInterval(60*60);//one hour
 		//phgaine ton sto homepage tou analoga me to typo user
-		request.getRequestDispatcher(user.getType()+"/home.jsp").forward(request, response);
+		response.sendRedirect(user.getType()+"/home.jsp");
 	}
 
 }

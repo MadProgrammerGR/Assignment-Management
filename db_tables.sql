@@ -27,7 +27,8 @@ CREATE TABLE group_members (
 CREATE TABLE assignments (
 	id serial primary key,
 	title varchar(50) not null,
-	description varchar(200),
+	filename varchar(50),
+	file bytea,
 	professor_id int references professors(id) on delete cascade,
 	max_grade int not null,
 	max_group_size int
@@ -38,6 +39,7 @@ CREATE TABLE assignments (
 CREATE TABLE assignment_groups (
 	assignment_id int references assignments(id) on delete cascade,
 	group_id int,
+	filename varchar(50),
 	file bytea,
 	grade int
 );
@@ -63,9 +65,5 @@ INSERT INTO students (id, first_name, last_name) VALUES
 INSERT INTO group_members (group_id, student_id) VALUES (1, 1), (1, 3);
 INSERT INTO group_members (group_id, student_id) VALUES (2, 2);
 
-
-INSERT INTO assignments (title, professor_id, max_grade) VALUES ('Texn Log', 4, 10);
-INSERT INTO assignments (title, professor_id, max_grade) VALUES ('Vaseis ded', 5, 5);
-
-INSERT INTO assignment_groups (assignment_id, group_id, grade) VALUES (1, 1, 8);
-INSERT INTO assignment_groups (assignment_id, group_id, grade) VALUES (2, 2, 10);
+--INSERT INTO assignment_groups (assignment_id, group_id, grade) VALUES (1, 1, 8);
+--INSERT INTO assignment_groups (assignment_id, group_id, grade) VALUES (2, 2, 10);

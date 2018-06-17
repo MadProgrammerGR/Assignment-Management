@@ -1,12 +1,14 @@
 package beans;
 
 public class User {
+	private int id;
 	private String username;
 	private String firstname;
 	private String lastname;
 	private String type;
 	
-	public User(String username, String firstname, String lastname, String type) {
+	public User(int id, String username, String firstname, String lastname, String type) {
+		this.id = id;
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -44,5 +46,12 @@ public class User {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }
