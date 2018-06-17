@@ -1,3 +1,113 @@
+html{
+	overflow-x: hidden;
+}
+
+body {
+	background-color: #232C3A;
+	color: #555;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+}
+
+.container {
+	max-width: 1280px;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+header {
+	color: #ADADAD;
+	text-align: center;
+}
+
+header a:link {
+	text-decoration: none;
+	color: #ADADAD;
+}
+
+header a:visited {
+	text-decoration: none;
+}
+
+header a:hover {
+	text-decoration: underline;
+	color: #ADADAD;
+}
+
+header a:active {
+	text-decoration: underline;
+}
+
+article {
+	/*width: 83.33333333%;*/
+	margin-left: 8.33333333%;
+	margin-right: 8.33333333%;
+	background-color:#f5f5f5;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-radius: 25px;
+	padding: 50px;
+	padding-bottom:20px;
+	font-size:20px;
+	font-family:serif, sans-serif;
+	overflow: hidden;
+}
+
+footer, footer::before {
+	background-color: #cccccc;
+	height: 20px;
+	padding: 20px 0;
+}
+
+footer {
+	position: relative;
+}
+
+footer::before {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	left:-10000px;
+	width: 20000px;
+}
+
+footer div {
+	float: left;
+	position: relative;
+	width: 100%;
+}
+
+footer div .footer-left {
+	float: left;
+}
+
+footer div .footer-right {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.container::before,
+.container::after,
+footer:before,
+footer:after {
+	display: table;
+	content: " ";
+}
+
+.container::after,
+footer:after {
+	clear: both;
+}
+
+/*******************MODAL*********************************************/
+
 .modal-back {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
