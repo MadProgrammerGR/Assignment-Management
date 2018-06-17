@@ -1,6 +1,7 @@
 <%@tag pageEncoding="UTF-8"%>
 <%@attribute name="title" required="true"%>
 <%@attribute name="home_url" required="true"%>
+<%@attribute name="logo" required="false"%>
 
 <!DOCTYPE html>
 <html>
@@ -9,7 +10,7 @@
 </head>
 <body>
 	<a href="${home_url}">
-		<img src="${pageContext.request.contextPath}/images/logo.png"/>
+		<img src="${pageContext.request.contextPath}/images/logo<%= "horizontal".equals(logo)? "_horizontal.png" : ""%>.png"/>
 	</a>
 	<h1><a href="${home_url}">Assignment Management System</a></h1>
 

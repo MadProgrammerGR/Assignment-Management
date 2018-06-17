@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ page import="beans.User" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 							   
 <c:set var="bodyContent">
-	<!-- stub -->
-	<h2>Welcome FirstName Lastname</h2>
+	<% User user = (User)session.getAttribute("user_info"); %>
+	<h2>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h2>
 	<table>
 	<tr><th>Title</th><th>Description</th><th>Professor</th><th>Group</th><th>Grade</th></tr>
+	<!-- TODO -->
 	<tr><td>Subject something - exercise 1</td>
 		<td><a href="${pageContext.request.contextPath}/assignment/download?id=1">(download icon)</a></td>
 		<td>Name</td>
@@ -20,6 +22,6 @@
 	</table>
 </c:set>
 
-<t:template title="Home" home_url="${pageContext.request.contextPath}/student/home.jsp">
+<t:template title="Home" home_url="${pageContext.request.contextPath}/student/home.jsp" logo="horizontal">
 	${bodyContent}
 </t:template>
