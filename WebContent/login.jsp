@@ -13,4 +13,14 @@
 		<input type="password" name="password"> <br>
 		<input type="submit" value="Login"/>
 	</form>
+
+	<a href="#" onclick="display('noAcc-modal','block')">Don't have an account?</a>
+	<div id="noAcc-modal" class="modal-back">
+		<div class="modal-content">
+			<span class="close" onclick="display('noAcc-modal','none')">&times;</span>
+			<p>Please contact your <a href="mailto:secretary@university.gr?Subject=Request%20Account" target="_top">secretary</a> 
+			 or <a href="mailto:admin@system.gr?Subject=Request%20Account" target="_top">site admin.</a></p>
+		</div>
+	</div>
+	
 </t:template>
