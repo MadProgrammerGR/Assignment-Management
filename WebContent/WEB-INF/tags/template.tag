@@ -11,7 +11,7 @@
 </head>
 <body>
 	<a href="${home_url}">
-		<img src="${pageContext.request.contextPath}/images/logo<%= "horizontal".equals(logo)? "_horizontal.png" : ""%>.png"/>
+		<img src="${pageContext.request.contextPath}/images/logo<%= "horizontal".equals(logo)? "_horizontal" : ""%>.png"/>
 	</a>
 	<h1><a href="${home_url}">Assignment Management System</a></h1>
 
