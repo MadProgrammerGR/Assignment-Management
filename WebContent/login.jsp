@@ -3,9 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <t:template title="Home" home_url="${pageContext.request.contextPath}/login.jsp" logo="normal">
-	<div id="info-message">
-		${message}
-	</div>
+	<div class="message message-${status}">${message}</div>
 	<form action="${pageContext.request.contextPath}/Login" method="POST">
 		<label>Username:</label>
 		<input type="text" name="username"> <br>

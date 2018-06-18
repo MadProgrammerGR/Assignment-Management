@@ -19,13 +19,13 @@ public class Login extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		if(ServletUtils.isEmpty(username) || ServletUtils.isEmpty(password)) {
-			ServletUtils.forwardMessage(request, response, "Empty Username or Password", "login.jsp");
+			ServletUtils.forwardMessage(request, response, "login.jsp", "error", "Empty Username or Password");
 			return;
 		}
 		
 		User user = Accounts.getUser(username, password);
 		if(user == null) {
-			ServletUtils.forwardMessage(request, response, "Incorrect Credentials", "login.jsp");
+			ServletUtils.forwardMessage(request, response, "login.jsp", "error", "Incorrect Credentials");
 			return;
 		}
 		

@@ -25,13 +25,16 @@ public class UploadAssignment extends HttpServlet {
 		    int maxGroupSize = Integer.parseInt(request.getParameter("max_group_size"));
 		    Part filePart = request.getPart("description_file");
 		    String filename = filePart.getSubmittedFileName();
+		    if(ServletUtils.isEmpty(filename)){
+			    ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "error", "Description file is required");
+			    return;
+		    }
 		    InputStream content = filePart.getInputStream();
-		    
 		    User prof = (User)request.getSession().getAttribute("user_info");
 		    if (Assignments.save(title, filename, content, prof.getId(), maxGrade, maxGroupSize))
-			    ServletUtils.forwardMessage(request, response, "Upload successful", "/professor/home.jsp");
+			    ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "success", "Upload successful");
 		    else
-			    ServletUtils.forwardMessage(request, response, "Error occured during upload", "/professor/home.jsp");
+			    ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "error", "Error occured during upload");
 	}
 
 }

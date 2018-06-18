@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public final class ServletUtils {
-	public static void forwardMessage(HttpServletRequest request, HttpServletResponse response, String message, String page) throws ServletException, IOException {
+	public static void forwardMessage(HttpServletRequest request, HttpServletResponse response, String page, String status, String message) throws ServletException, IOException {
+		request.setAttribute("status", status);
 		request.setAttribute("message", message);
 		request.getRequestDispatcher(page).forward(request, response);
 	}

@@ -18,7 +18,6 @@ public class DownloadAssignment extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int assignmentId = Integer.parseInt(request.getParameter("id"));
-		
 		InputStream fileStream = Assignments.getAssignmentFileData(assignmentId);
 		if(fileStream == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -7,11 +7,10 @@
 
 <c:set var="bodyContent">
 	<% User user = (User)session.getAttribute("user_info"); %>
-	<h2>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h2>
+	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
 	
-	
+	<div class="message message-${status}">${message}</div><br>
 	<button onclick="display('createAssignment-modal','block')">Create Assignment</button>
-	<div id="status-message">${message}</div>
 	<div id="createAssignment-modal" class="modal-back">
 		<div class="modal-content">
 			<span class="close" onclick="display('createAssignment-modal','none')">&times;</span>

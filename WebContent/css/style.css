@@ -123,6 +123,23 @@ footer:after {
 	clear: both;
 }
 
+/*************Form Message*******************************************/
+.message {
+	display: inline-block;
+	margin: 5px;
+  padding: 5px;
+	border-radius: 7px;
+}
+
+.message-error {
+  color: #D8061C;
+  background-color: #FFD2D2;
+}
+
+.message-success {
+  color: #2ccc32;
+  background-color: #c5f7c7;
+}
 
 /*******************MODAL*********************************************/
 .modal-back {
