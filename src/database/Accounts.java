@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.naming.InitialContext;
-import javax.servlet.ServletContextEvent;
+import javax.annotation.Resource;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
@@ -16,17 +15,8 @@ import beans.User;
 
 @WebListener
 public final class Accounts implements ServletContextListener{
+	@Resource(name="jdbc/postgres") //to name tou resource sto context.xml
 	private static DataSource src;
-	
-	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		try {
-			InitialContext context = new InitialContext();
-			src = (DataSource) context.lookup("java:comp/env/jdbc/postgres");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static User getUser(String username, String password) {
 		try(Connection con = src.getConnection();
