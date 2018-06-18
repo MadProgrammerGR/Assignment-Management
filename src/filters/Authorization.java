@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.User;
+import servlets.ServletUtils;
 
 @WebFilter("/*")
 public class Authorization implements Filter {
@@ -56,10 +57,21 @@ public class Authorization implements Filter {
 			if(freeUrls.contains(reqUrl)){ //orato url
 				chain.doFilter(request, response); 
 			}else{//aorato url :P
-				req.setAttribute("message", "Please login first.");
-				req.getServletContext().getRequestDispatcher("/login.jsp").forward(req, res);				
+				ServletUtils.forwardMessage(req, res, "login.jsp", "error", "Please login first.");
 			}
 			return;
+		}
+		//////////apodw k katw einai gia sundedemenous xrhstes
+		
+		//expire session
+		if(reqUrl.equals("/logout") || reqUrl.equals("/exit")) {
+			try{
+				session.invalidate();
+				ServletUtils.forwardMessage(req, res, "login.jsp", "success", "You have been logged out successfully");
+			}catch (java.lang.IllegalStateException e){
+				ServletUtils.forwardMessage(req, res, "login.jsp", "error", "Already invalidated session");
+			}
+			return; 
 		}
 		//redirect user ama grapsei la8os to home url tou
 		if(reqUrl.equals("/login.jsp") || reqUrl.equals("/home.jsp")) {

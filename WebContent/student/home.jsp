@@ -5,7 +5,7 @@
 							   
 <c:set var="bodyContent">
 	<% User user = (User)session.getAttribute("user_info"); %>
-	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
+	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%> -- <a href="${pageContext.request.contextPath}/logout">:q!</a> </h3>
 	<table>
 	<tr><th>Title</th><th>Description</th><th>Professor</th><th>Group</th><th>Grade</th></tr>
 	<!-- TODO -->

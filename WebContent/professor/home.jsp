@@ -7,7 +7,7 @@
 
 <c:set var="bodyContent">
 	<% User user = (User)session.getAttribute("user_info"); %>
-	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
+	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%> -- <a href="${pageContext.request.contextPath}/logout">:q!</a> </h3>
 	
 	<div class="message message-${status}">${message}</div><br>
 	<button onclick="display('createAssignment-modal','block')">Create Assignment</button>
