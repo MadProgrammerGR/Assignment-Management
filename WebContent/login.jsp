@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<t:template title="Home" home_url="${pageContext.request.contextPath}/student/home.jsp" logo="normal">
+<t:template title="Home" home_url="${pageContext.request.contextPath}/login.jsp" logo="normal">
 	<div id="info-message">
 		${message}
 	</div>
@@ -11,7 +11,7 @@
 		<input type="text" name="username"> <br>
 		<label>Password:</label>
 		<input type="password" name="password"> <br>
-		<input type="submit" value="Login"/>
+		<input type="submit" value="Login" class="button"/>
 	</form>
 
 	<a href="#" onclick="display('noAcc-modal','block')">Don't have an account?</a>

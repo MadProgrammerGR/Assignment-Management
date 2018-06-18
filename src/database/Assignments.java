@@ -45,22 +45,5 @@ public final class Assignments implements ServletContextListener{
 			return false;
 		}
 	}
-	
-	public static User getUser(String username, String password) {
-		try(Connection con = src.getConnection();
-			PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
-			Statement stm2 = con.createStatement(); ) {
-			stm.setString(1, username);
-			stm.setString(2, password);
-			ResultSet rs = stm.executeQuery();
-			if (!rs.next()) return null;
-			String role = rs.getString("role");
-			int id = rs.getInt("id");
-			ResultSet rs2 = stm2.executeQuery("SELECT * FROM "+role+"s WHERE id = "+id); rs2.next();
-			return new User(id, username, rs2.getString("first_name"), rs2.getString("last_name"), role);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+
 }

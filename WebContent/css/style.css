@@ -18,18 +18,19 @@ body {
 	margin-left: auto;
 }
 
+a:link, a:visited {
+	text-decoration: none;
+	color: #5b8bd8;
+}
+
 header {
 	color: #ADADAD;
 	text-align: center;
 }
 
-header a:link {
+header a:link, header a:visited {
 	text-decoration: none;
 	color: #ADADAD;
-}
-
-header a:visited {
-	text-decoration: none;
 }
 
 header a:hover {
@@ -41,10 +42,26 @@ header a:active {
 	text-decoration: underline;
 }
 
-article {
-	/*width: 83.33333333%;*/
-	margin-left: 8.33333333%;
-	margin-right: 8.33333333%;
+button, .button {
+    background-color: #2b5aa5;
+    border: none;
+  	border-radius: 5px;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 5px 5px;
+    cursor: pointer;
+}
+
+button:hover, .button:hover {
+  background-color: #3d6dba;
+}
+
+article, .modal-content {
+	margin: auto;
+	width: 75%;
 	background-color:#f5f5f5;
 	margin-top: 50px;
 	margin-bottom: 50px;
@@ -106,8 +123,8 @@ footer:after {
 	clear: both;
 }
 
-/*******************MODAL*********************************************/
 
+/*******************MODAL*********************************************/
 .modal-back {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -123,11 +140,10 @@ footer:after {
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 40%;
+  margin: auto;
+  border: 1px solid #888;
+  width: 40%;
+	margin-top: 50px;
 }
 
 .close {
