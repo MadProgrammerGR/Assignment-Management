@@ -28,8 +28,9 @@ public class Authorization implements Filter {
 		freeUrls.add("/login.jsp");
 	}
 	
+	//ti vlepei enas syndedemenos user typoy type (professor h student)
 	private boolean isAuthorized(String type, String url) {
-		return url.startsWith("/"+type) || url.startsWith("/assignment/download");
+		return url.startsWith("/"+type) || url.startsWith("/assignment/download") || url.equals("/logout");
 	}
 	
 	private boolean isResource(String url) {
@@ -60,18 +61,6 @@ public class Authorization implements Filter {
 				ServletUtils.forwardMessage(req, res, "login.jsp", "error", "Please login first.");
 			}
 			return;
-		}
-		//////////apodw k katw einai gia sundedemenous xrhstes
-		
-		//expire session
-		if(reqUrl.equals("/logout") || reqUrl.equals("/exit")) {
-			try{
-				session.invalidate();
-				ServletUtils.forwardMessage(req, res, "login.jsp", "success", "You have been logged out successfully");
-			}catch (java.lang.IllegalStateException e){
-				ServletUtils.forwardMessage(req, res, "login.jsp", "error", "Already invalidated session");
-			}
-			return; 
 		}
 		//redirect user ama grapsei la8os to home url tou
 		if(reqUrl.equals("/login.jsp") || reqUrl.equals("/home.jsp")) {

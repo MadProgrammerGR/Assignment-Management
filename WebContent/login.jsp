@@ -6,7 +6,7 @@
 
 	<form id="lin" action="${pageContext.request.contextPath}/Login" method="POST">
 		<div class="row">
-			<div class="lin-title">Login to continue</div>
+			<div class="lin-title">Login</div>
 		</div>
 		<div class="row">
 			<div class="message message-${status}">${message}</div>
