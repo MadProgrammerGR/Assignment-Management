@@ -30,7 +30,7 @@
 		<p><i>No assignments have been created yet.</i></p>
 	<% }else{ %>
 		<table>
-		<tr><th>Assignment</th><th>Description</th></tr>
+		<tr><th>Assignment</th><th style="width:1%;white-space:nowrap;">Description</th></tr>
 		<% for(ProfessorAssignment pa : list) { %>
 		<tr>
 			<td><a href="${pageContext.request.contextPath}/professor/grade?id=<%=pa.getId()%>"><%=pa.getTitle()%></a></td>
