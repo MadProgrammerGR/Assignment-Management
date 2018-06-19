@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 
 import beans.ProfessorAssignment;
+import beans.User;
 
 @WebListener
 public final class Assignments implements ServletContextListener{
@@ -37,10 +38,44 @@ public final class Assignments implements ServletContextListener{
 		}
 	}
 	
-	public static List<ProfessorAssignment> getProfessorAssignments(int profId) {
+	public static ProfessorAssignment get(int id) {
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT a.title, a.filename, a.max_grade, a.max_group_size, p.first_name, p.last_name"
+						+ " FROM assignments a INNER JOIN professors p on a.professor_id=p.id"
+						+ " WHERE a.id = ?");) {
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				User prof = new User(rs.getString(5), rs.getString(6));
+				return new ProfessorAssignment(id, rs.getString(1), rs.getString(2), prof, rs.getInt(3), rs.getInt(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static List<ProfessorAssignment> getAll() {
 		List<ProfessorAssignment> list = new ArrayList<ProfessorAssignment>();
 		try (Connection con = src.getConnection();
-				PreparedStatement ps = con.prepareStatement("SELECT id, title, filename FROM assignments WHERE professor_id = ?");) {
+				PreparedStatement ps = con.prepareStatement("SELECT a.id, a.title, p.first_name, p.last_name"
+						+ " FROM assignments a INNER JOIN professors p on a.professor_id=p.id ORDER BY a.title");) {
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				User p = new User(rs.getString(3), rs.getString(4));
+				ProfessorAssignment pa = new ProfessorAssignment(rs.getInt(1), rs.getString(2), p);
+				list.add(pa);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static List<ProfessorAssignment> getFromProfessor(int profId) {
+		List<ProfessorAssignment> list = new ArrayList<ProfessorAssignment>();
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT id, title, filename FROM assignments WHERE professor_id = ? ORDER BY title");) {
 			ps.setInt(1, profId);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {

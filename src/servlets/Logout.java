@@ -16,7 +16,7 @@ public class Logout extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		try {
 			session.invalidate();
-			ServletUtils.forwardMessage(request, response, "login.jsp", "success", "You have been logged out successfully");
+			ServletUtils.forwardMessage(request, response, "login.jsp", "success", "You have been logged out successfully, bye!");
 		} catch (java.lang.IllegalStateException e) {
 			ServletUtils.forwardMessage(request, response, "login.jsp", "error", "Already invalidated session");
 		}

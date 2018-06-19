@@ -58,7 +58,7 @@ public class Authorization implements Filter {
 			if(freeUrls.contains(reqUrl)){ //orato url
 				chain.doFilter(request, response); 
 			}else{//aorato url :P
-				ServletUtils.forwardMessage(req, res, "login.jsp", "error", "Please login first.");
+				ServletUtils.forwardMessage(req, res, "/login.jsp", "error", "Please login first.");
 			}
 			return;
 		}

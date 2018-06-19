@@ -1,27 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="beans.User" %>
+<%@ page import="java.util.*, beans.*, database.*" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 							   
 <c:set var="bodyContent">
 	<% User user = (User)session.getAttribute("user_info"); %>
-	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%> -- <a href="${pageContext.request.contextPath}/logout">:q!</a> </h3>
-	<table>
-	<tr><th>Title</th><th>Description</th><th>Professor</th><th>Group</th><th>Grade</th></tr>
-	<!-- TODO -->
-	<tr><td>Subject something - exercise 1</td>
-		<td><a href="${pageContext.request.contextPath}/assignment/download?id=1">(download icon)</a></td>
-		<td>Name</td>
-		<td>p100<br>p101<br>p102<br></td>
-		<td>3/3</tr>
-	<tr><td>Subject something else - exercise 5</td>
-		<td><a href="${pageContext.request.contextPath}/assignment/download?id=2">(download icon)</a></td>
-		<td>Name2</td>
-		<td><a href="${pageContext.request.contextPath}/student/create_group.jsp?id=2">create</a></td>
-		<td></td></tr>
-	</table>
+	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
+	
+	<div class="message message-${status}">${message}</div>
+	<% List<ProfessorAssignment> list = Assignments.getAll(); %>
+	<% if(list.isEmpty()) { %>
+		<p><i>No assignments available at the moment.</i></p>
+	<% }else{ %>
+		<h4>Currently available assignments</h4>
+		<table>
+		<tr><th>Assignment</th><th>Uploaded by</th></tr>
+		<% for(ProfessorAssignment pa : list) { %>
+		<tr>
+			<td><a href="${pageContext.request.contextPath}/student/assignment?id=<%=pa.getId()%>"><%=pa.getTitle()%></a></td>
+			<td><%=pa.getProf().getLastname()%> <%=pa.getProf().getFirstname()%></td>
+		</tr>
+		<% } %>
+		</table>
+	<% } %>
 </c:set>
 
-<t:template title="Home" home_url="${pageContext.request.contextPath}/student/home.jsp" logo="horizontal">
+<t:template title="Home" home_url="${pageContext.request.contextPath}/student/home.jsp" 
+			logo="horizontal" logout="visible">
 	${bodyContent}
 </t:template>

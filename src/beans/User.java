@@ -14,6 +14,10 @@ public class User {
 		this.lastname = lastname;
 		this.type = type;
 	}
+	
+	public User(String firstname, String lastname) {
+		this(0, null, firstname, lastname, null);
+	}
 
 	public String getUsername() {
 		return username;

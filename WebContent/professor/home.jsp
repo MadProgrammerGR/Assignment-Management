@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
-<%@ page import="beans.User, beans.ProfessorAssignment" %>
-<%@ page import="database.Assignments" %>
+<%@ page import="java.util.*, beans.*, database.*" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="bodyContent">
 	<% User user = (User)session.getAttribute("user_info"); %>
-	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%> -- <a href="${pageContext.request.contextPath}/logout">:q!</a> </h3>
+	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
 	
 	<div class="message message-${status}">${message}</div><br>
 	<button onclick="display('createAssignment-modal','block')">Create Assignment</button>
@@ -27,7 +25,7 @@
 	</div>
 
 
-	<% List<ProfessorAssignment> list = Assignments.getProfessorAssignments(user.getId()); %>
+	<% List<ProfessorAssignment> list = Assignments.getFromProfessor(user.getId()); %>
 	<% if (list.isEmpty()){ %>
 		<p><i>No assignments have been created yet.</i></p>
 	<% }else{ %>
@@ -44,6 +42,7 @@
 	<% } %>
 </c:set>
 
-<t:template title="Home" home_url="${pageContext.request.contextPath}/professor/home.jsp" logo="horizontal">
+<t:template title="Home" home_url="${pageContext.request.contextPath}/professor/home.jsp" 
+			logo="horizontal" logout="visible">
 	${bodyContent}
 </t:template>

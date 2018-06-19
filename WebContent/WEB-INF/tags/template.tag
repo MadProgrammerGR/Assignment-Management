@@ -2,6 +2,7 @@
 <%@attribute name="title" required="true"%>
 <%@attribute name="home_url" required="true"%>
 <%@attribute name="logo" required="false"%>
+<%@attribute name="logout" required="false"%>
 
 <!DOCTYPE html>
 <html>
@@ -30,6 +31,11 @@
 		</a>
 		<h1><a href="${home_url}">Assignment Management System</a></h1>
 	</header>
+	
+	<% if ("visible".equals(logout)) {%>
+	<!-- TODO: kalyterh 8esh k css -->
+	<a href="${pageContext.request.contextPath}/logout">Logout</a> 
+	<% } %>
 	
 	<article>
 		<jsp:doBody/>
