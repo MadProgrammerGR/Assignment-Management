@@ -3,16 +3,34 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <t:template title="Home" home_url="${pageContext.request.contextPath}/login.jsp" logo="normal">
-	<div class="message message-${status}">${message}</div>
-	<form action="${pageContext.request.contextPath}/Login" method="POST">
-		<label>Username:</label>
-		<input type="text" name="username"> <br>
-		<label>Password:</label>
-		<input type="password" name="password"> <br>
-		<input type="submit" value="Login" class="button"/>
+
+	<form id="lin" action="${pageContext.request.contextPath}/Login" method="POST">
+		<div class="row">
+			<div class="lin-title">Login to continue</div>
+		</div>
+		<div class="row">
+			<div class="message message-${status}">${message}</div>
+		</div>
+		<div class="form-input row">
+			<input id="lin-username" type="text" name="username" placeholder="Username" autofocus="autofocus">
+		</div>
+		<div class="form-input row">
+			<input id="lin-password" type="password" name="password" placeholder="Password">
+		</div>
+		<div class="row">
+			<div class="col-l-submit">
+				<input type="submit" value="Login" class="button button-block"/>
+			</div>
+		</div>
+		<hr class="line">
+
+		<div class="row">
+			<div class="col-l-last">
+				<a href="#" onclick="display('noAcc-modal','block')">Don't have an account?</a>
+			</div>
+		</div>
 	</form>
 
-	<a href="#" onclick="display('noAcc-modal','block')">Don't have an account?</a>
 	<div id="noAcc-modal" class="modal-back">
 		<div class="modal-content">
 			<span class="close" onclick="display('noAcc-modal','none')">&times;</span>
