@@ -32,12 +32,10 @@
 		<h1><a href="${home_url}">Assignment Management System</a></h1>
 	</header>
 	
-	<% if ("visible".equals(logout)) {%>
-	<!-- TODO: kalyterh 8esh k css -->
-	<a href="${pageContext.request.contextPath}/logout">Logout</a> 
-	<% } %>
-	
 	<article>
+		<% if ("visible".equals(logout)) {%>
+		<a href="${pageContext.request.contextPath}/logout" class="button" style="float: right;color: white;">Logout</a> 
+		<% } %>
 		<jsp:doBody/>
 	</article>
 	

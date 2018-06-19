@@ -139,6 +139,30 @@ article, .modal-content {
 	overflow: hidden;
 }
 
+article table {
+  collapse: collapse;
+  width: 100%;
+  border: 1px solid;
+	border-radius: 5px;
+}
+
+article th,td {
+  text-align: center;
+  padding: 8px;
+}
+article th {
+  background-color: #133C6A;
+  color: white;
+}
+article tr:nth-child(even){
+	background-color: #f2f2f2
+}
+article tr:nth-child(odd){
+	background-color: #dedeff;
+}
+article tr:hover{
+	background-color: #c6c9ce;
+}
 footer, footer:before {
 	background-color: #cccccc;
 	height: 20px;
