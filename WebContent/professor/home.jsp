@@ -30,12 +30,11 @@
 		<p><i>No assignments have been created yet.</i></p>
 	<% }else{ %>
 		<table>
-		<tr><th>Title</th><th>Description</th><th>Grade</th></tr>
+		<tr><th>Assignment</th><th>Description</th></tr>
 		<% for(ProfessorAssignment pa : list) { %>
 		<tr>
-			<td><%=pa.getTitle()%></td>
-			<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download=<%=pa.getFilename()%>>(download icon)</a></td>
-			<td><a href="${pageContext.request.contextPath}/professor/grade?id=<%=pa.getId()%>">(grade icon or arrow or something)</a></td>
+			<td><a href="${pageContext.request.contextPath}/professor/grade?id=<%=pa.getId()%>"><%=pa.getTitle()%></a></td>
+			<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>"><i class="fa fa-download"></i></a></td>
 		</tr>
 		<% } %>
 		</table>
