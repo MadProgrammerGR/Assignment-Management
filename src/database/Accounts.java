@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContextListener;
@@ -34,5 +36,22 @@ public final class Accounts implements ServletContextListener{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static List<User> getGroupMembers(int groupid){
+		List<User> members = new ArrayList<User>();
+		try(Connection con = src.getConnection();
+				PreparedStatement stm = con.prepareStatement("SELECT group_id,id,username,first_name,last_name,role FROM group_members INNER JOIN students ON students.id = group_members.student_id NATURAL JOIN users where group_id = ?");){
+			stm.setInt(1, groupid);
+			ResultSet rs = stm.executeQuery();
+			while(rs.next()){
+				members.add(new User(rs.getInt("id"), rs.getString("username"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("role")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return members;
 	}
 }

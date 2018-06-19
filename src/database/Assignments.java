@@ -13,6 +13,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 
+import beans.GroupAssignment;
 import beans.ProfessorAssignment;
 import beans.User;
 
@@ -101,6 +102,38 @@ public final class Assignments implements ServletContextListener{
 			ResultSet rs = ps.executeQuery();
 			if(rs.next())
 				return rs.getBinaryStream("file");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static GroupAssignment getGroupAssignment(int group_id,int assignment_id) {
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement(
+						"SELECT student_id, group_id, assignment_id, filename, grade FROM group_members "+
+				"NATURAL JOIN assignment_groups WHERE student_id = ? AND assignment_id = ?");)
+		{
+			ps.setInt(1, group_id);
+			ps.setInt(2 ,assignment_id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				int gid = rs.getInt("group_id");
+				int aid = rs.getInt("assignment_id");
+				String fn;
+				int grade;
+				try{
+					fn = rs.getString("filename");
+				} catch(Exception e) {
+					fn = " ";
+				}
+				try{
+					grade = rs.getInt("grade");
+				}catch(Exception e){
+					grade = -1;
+				}
+				return new GroupAssignment(gid,aid,grade,fn);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
