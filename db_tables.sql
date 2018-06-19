@@ -1,3 +1,9 @@
+---- sudo -u postges -i  or  su postgres
+---- createuser --pwprompt DBuser
+---- createdb --owner=DBuser DBassignments
+---- exit
+---- psql -h 127.0.0.1 -d DBassignments -U DBuser
+
 CREATE TYPE user_role AS ENUM ('professor', 'student');
 
 CREATE TABLE users (
@@ -24,11 +30,13 @@ CREATE TABLE group_members (
 	student_id int references students(id) on delete cascade
 );
 
+CREATE DOMAIN bytea_5mb AS bytea CHECK(length(value) <= 5000000);
+
 CREATE TABLE assignments (
 	id serial primary key,
 	title varchar(50) not null,
 	filename varchar(50),
-	file bytea,
+	file bytea_5mb,
 	professor_id int references professors(id) on delete cascade,
 	max_grade int not null,
 	max_group_size int
@@ -40,7 +48,7 @@ CREATE TABLE assignment_groups (
 	assignment_id int references assignments(id) on delete cascade,
 	group_id int,
 	filename varchar(50),
-	file bytea,
+	file bytea_5mb,
 	grade int
 );
 
