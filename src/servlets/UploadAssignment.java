@@ -31,10 +31,9 @@ public class UploadAssignment extends HttpServlet {
 		    }
 		    InputStream content = filePart.getInputStream();
 		    User prof = (User)request.getSession().getAttribute("user_info");
-		    if (Assignments.save(title, filename, content, prof.getId(), maxGrade, maxGroupSize))
-			    ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "success", "Upload successful");
-		    else
-			    ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "error", "Error occured during upload");
+		    StringBuilder saveMsg = new StringBuilder("");
+		    boolean saveSuccess = Assignments.save(title, filename, content, prof.getId(), maxGrade, maxGroupSize, saveMsg);
+		    ServletUtils.forwardMessage(request, response, "/professor/home.jsp", saveSuccess ? "success" : "error", saveMsg.toString());
 	}
 
 }
