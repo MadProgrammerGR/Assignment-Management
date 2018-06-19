@@ -50,6 +50,8 @@ public class Authorization implements Filter {
 		res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		res.setHeader("Pragma", "no-cache");
 		res.setDateHeader("Expires", 0);
+		req.setCharacterEncoding("UTF-8"); //gia na diavazei ellhnika
+		res.setCharacterEncoding("UTF-8"); //gia na stelnei ellhnika
 		
 		HttpSession session = req.getSession(false);
 		User user = session!=null ? (User) session.getAttribute("user_info") : null;

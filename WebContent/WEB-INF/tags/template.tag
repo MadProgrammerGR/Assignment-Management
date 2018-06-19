@@ -9,7 +9,7 @@
 <head>
 <title>${title}</title>
 <link rel="stylesheet" type="text/css"	href="${pageContext.request.contextPath}/css/style.css" />
-	
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">	
 <script type="text/javascript">
 	function display(mId, value) {
 		document.getElementById(mId).style.display = value;
@@ -34,16 +34,17 @@
 	
 	<article>
 		<% if ("visible".equals(logout)) {%>
-		<a href="${pageContext.request.contextPath}/logout" class="button" style="float: right;color: white;">Logout</a> 
+		<a href="${pageContext.request.contextPath}/logout" class="button" style="float: right;color: white;">Logout <i class="fa fa-sign-out"></i></a> 
 		<% } %>
 		<jsp:doBody/>
 	</article>
 	
 	<footer>
 		<div>
-			<a class="footer-left">
-				TODO-mikri eikona/logo
-			</a>
+			<span class="footer-left">
+  				<img src="/Assignment_Management/images/logo_horizontal.png" height="30px">
+  				<i>Managing student's assignments since 2018</i>
+  			</span>
 			<span class="footer-right">
 				2018 COPYLEFT <a href="#" onclick="display('about-modal','block')">@OMADARA</a>
 			</span>

@@ -12,7 +12,7 @@
 <c:set var="bodyContent">
 	<h3 style="text-align: center;"><%=pa.getTitle()%></h3>
 	<p style="text-align: right;"><i>Created by <%=pa.getProf().getLastname()%> <%=pa.getProf().getFirstname()%></i></p>
-	<br><p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download=<%=pa.getFilename()%>>Description file (download icon)</a></p>
+	<br><p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download=<%=pa.getFilename()%>>Description <i class="fa fa-download"></i></a></p>
 	
 	<!-- TODO: dhmiourgia h provolh group, anevasma ergasias kai provolh va8mou -->
 	<%if(ga == null) {%>

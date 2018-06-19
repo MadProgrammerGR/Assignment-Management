@@ -107,6 +107,19 @@ public final class Assignments implements ServletContextListener{
 		}
 		return null;
 	}
+
+	public static int getProfessorId(int id) {
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT professor_id FROM assignments WHERE id = ?");) {
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+				return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 	public static GroupAssignment getGroupAssignment(int group_id,int assignment_id) {
 		try (Connection con = src.getConnection();
