@@ -53,6 +53,31 @@ CREATE TABLE assignment_groups (
 );
 
 
+CREATE OR REPLACE FUNCTION check_rows_count_limit() RETURNS TRIGGER AS $body$
+DECLARE
+	__cnt integer;
+BEGIN
+	EXECUTE 'select count(' || TG_ARGV[0] || ') from ' || TG_TABLE_NAME || ' where ' || TG_ARGV[0] || '=($1).' || TG_ARGV[0] || ' group by '||TG_ARGV[0] USING NEW into __cnt;
+	IF __cnt >= TG_ARGV[1]::integer THEN
+		RAISE EXCEPTION 'You reached your limit (%)', TG_ARGV[1];
+	END IF;
+	RETURN NEW;
+END;
+$body$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER tr_check_group_member_limit
+BEFORE INSERT ON group_members
+FOR EACH ROW EXECUTE PROCEDURE check_rows_count_limit('student_id', 5);
+
+CREATE TRIGGER tr_check_assignment_groups_limit
+BEFORE INSERT ON assignment_groups
+FOR EACH ROW EXECUTE PROCEDURE check_rows_count_limit('group_id', 5);
+
+CREATE TRIGGER tr_check_assignment_limit
+BEFORE INSERT ON assignments
+FOR EACH ROW EXECUTE PROCEDURE check_rows_count_limit('professor_id', 8);
+
 -----testing
 INSERT INTO users (username, password, role) VALUES
 ('p01102', 'tawa', 'student'),
