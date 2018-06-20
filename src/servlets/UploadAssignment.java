@@ -12,17 +12,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import beans.User;
+import database.Accounts;
 import database.Assignments;
 
-@WebServlet("/professor/uploadAssignment")
+@WebServlet({"/professor/uploadAssignment","/student/uploadAssignment"})
 @MultipartConfig
 public class UploadAssignment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String reqUrl = request.getServletPath();
+		if(reqUrl.startsWith("/professor")) {
+			handleProfessorUpload(request, response);
+		}else{
+			handleStudentGroupUpload(request, response);
+		}
+	}
+
+	private void handleProfessorUpload(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String title = request.getParameter("title");
-		Integer maxGrade = Integer.parseInt(request.getParameter("max_grade"));
-		Integer maxGroupSize = Integer.parseInt(request.getParameter("max_group_size"));
+		Integer maxGrade = ServletUtils.integerOrNull(request.getParameter("max_grade"));
+		Integer maxGroupSize = ServletUtils.integerOrNull(request.getParameter("max_group_size"));
 		Part filePart = request.getPart("description_file");
 		String filename = filePart.getSubmittedFileName();
 		if(ServletUtils.isEmpty(title) || ServletUtils.isEmpty(filename) || maxGrade==null || maxGroupSize==null){
@@ -42,6 +52,30 @@ public class UploadAssignment extends HttpServlet {
 			} else {
 				ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "success", "Upload successful");
 			}
+		}
+	}
+	
+	private void handleStudentGroupUpload(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		Integer assignmentId = ServletUtils.integerOrNull(request.getParameter("id"));
+		Integer groupId = ServletUtils.integerOrNull(request.getParameter("gid"));
+		Part filePart = request.getPart("file");
+		String filename = filePart.getSubmittedFileName();
+		if(ServletUtils.isEmpty(filename) || assignmentId==null || groupId==null){
+			ServletUtils.forwardMessage(request, response, "/student/assignment", "error", "Some field(s) are missing and are required");
+			return;
+		}
+		User student = (User)request.getSession(false).getAttribute("user_info");
+		if(!Accounts.belongsToGroup(student.getId(), groupId)) {
+			ServletUtils.forwardMessage(request, response, "/student/assignment", "error", "You dont belong in this group! stop trying to hack your classmates!");
+			return;
+		}
+		int sc = Assignments.saveGroupAssignment(assignmentId, groupId, filePart.getInputStream(), filename);
+		if (sc == -2) {
+			ServletUtils.forwardMessage(request, response, "/student/assignment", "error", "File size limit is 5MB");
+		} else if (sc == -1) {
+			ServletUtils.forwardMessage(request, response, "/student/assignment", "error", "Error occured during upload");
+		} else {
+			ServletUtils.forwardMessage(request, response, "/student/assignment", "success", "Upload successful");
 		}
 	}
 

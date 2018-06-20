@@ -41,6 +41,23 @@ public final class Assignments implements ServletContextListener{
 		}
 	}
 	
+	public static int saveGroupAssignment(int assignmentId, int groupId, InputStream stream, String filename) {
+		try(Connection con = src.getConnection();    
+				PreparedStatement ps = con.prepareStatement("INSERT INTO assignment_groups(assignment_id, group_id, file, filename) VALUES(?, ?, ?, ?)"); ) {
+			ps.setInt(1, assignmentId);
+			ps.setInt(2, groupId);
+			ps.setBinaryStream(3, stream);
+			ps.setString(4, filename);
+			ps.executeUpdate();
+			return 0;
+		} catch (SQLException e) {
+			if(e.getMessage().contains("bytea_5mb_check"))
+				return -2;
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
 	public static ProfessorAssignment get(int id) {
 		try (Connection con = src.getConnection();
 				PreparedStatement ps = con.prepareStatement("SELECT a.title, a.filename, a.max_grade, a.max_group_size, p.first_name, p.last_name"

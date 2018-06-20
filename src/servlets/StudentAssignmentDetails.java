@@ -15,17 +15,17 @@ public class StudentAssignmentDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			int id = Integer.parseInt(request.getParameter("id"));
-			ProfessorAssignment pa = Assignments.get(id);
-			if(pa == null) {
-				ServletUtils.forwardMessage(request, response, "/student/home.jsp", "error", "Assignment doesn't exist");
-			}else{
-				request.setAttribute("assignment_info", pa);
-				request.getRequestDispatcher("/WEB-INF/student_assignment_details.jsp").forward(request, response);				
-			}
-		}catch(NumberFormatException e) {
+		Integer id = ServletUtils.integerOrNull(request.getParameter("id"));
+		if(id==null) {
 			ServletUtils.forwardMessage(request, response, "/student/home.jsp", "error", "Invalid assignment");
+			return;
+		}
+		ProfessorAssignment pa = Assignments.get(id);
+		if(pa == null) {
+			ServletUtils.forwardMessage(request, response, "/student/home.jsp", "error", "Assignment doesn't exist");
+		}else{
+			request.setAttribute("assignment_info", pa);
+			request.getRequestDispatcher("/WEB-INF/student_assignment_details.jsp").forward(request, response);				
 		}
 	}
 
