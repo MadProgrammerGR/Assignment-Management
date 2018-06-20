@@ -145,12 +145,47 @@ public final class Assignments implements ServletContextListener{
 				}catch(Exception e){
 					grade = -1;
 				}
-				return new GroupAssignment(gid,aid,grade,fn);
+				return new GroupAssignment(aid,gid,grade,fn);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static List<GroupAssignment> getGroupsForAssignment(int assignment_id){
+		List<GroupAssignment> list = new ArrayList<GroupAssignment>();
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement(
+					"SELECT group_id, filename, file, grade FROM assignment_groups WHERE assignment_id = ?");)
+		{
+			ps.setInt(1, assignment_id);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				//TODO: modify GroupAssignment class for null grade
+				GroupAssignment g = new GroupAssignment(assignment_id, rs.getInt("group_id"), rs.getInt("grade"), rs.getString("filename"));
+				g.setMembers(Accounts.getGroupMembers(rs.getInt("group_id")));
+				list.add(g);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	//TODO?(no important) psql check grade in range(0,10]
+	public static int setGroupGrade(int assignment_id, int group_id, int grade) {
+		try(Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement(
+						"UPDATE assignment_groups SET grade = ? WHERE assignment_id = ? AND group_id = ?"); ) {
+				ps.setInt(3, group_id);
+				ps.setInt(2, assignment_id);
+				ps.setInt(1, grade);
+				return ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 	
 }
