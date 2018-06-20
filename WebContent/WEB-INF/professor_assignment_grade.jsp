@@ -8,15 +8,15 @@
 <%
 	User user = (User)session.getAttribute("user_info");
 	ProfessorAssignment pa = (ProfessorAssignment)request.getAttribute("assignment_info");
-	List<GroupAssignment> lg = Assignments.getGroupsForAssignment(pa.getId());
+	List<GroupAssignment> lg = (List<GroupAssignment>)request.getAttribute("students_assignments_info");
 %>
 
 <c:set var="bodyContent">
 	<h3 style="text-align: center;"><%=pa.getTitle()%></h3>
-	<br><p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download=<%=pa.getFilename()%>>Description <i class="fa fa-download"></i></a></p>
+	<br><p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>">Description <i class="fa fa-download"></i></a></p>
 
 	<%if(lg.isEmpty()) {%>
-	No groups yet for that assignment;
+		<p><i>Waiting for students to upload assignments...</i></p>
 	<%} else { %>
 	<br>
 	<table>
@@ -26,7 +26,9 @@
 		<td><%for(User member : g.getMembers()) {%>
 		<%=member.getUsername()%> | <%=member.getFirstname()%> <%=member.getLastname()%><br>
 		<%}%></td>
-		<td><%=g.getFilename()%> TODO:download group's assignment</td>
+		<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&gid=<%=g.getGroup_id()%>" download="<%=g.getFilename()%>"><i class="fa fa-download"></i></a></td>
+		
+		<!-- TODO input grade form with post-->
 		<td><a href="${pageContext.request.contextPath}/professor/grade?id=<%=pa.getId()%>&amp;gid=<%=g.getGroup_id()%>&amp;grade=2"><%=g.getGrade()%></a> TODO:popup set grade</td>
 		</tr>
 	<%} %>

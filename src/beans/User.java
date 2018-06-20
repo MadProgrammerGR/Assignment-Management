@@ -19,6 +19,10 @@ public class User {
 		this(0, null, firstname, lastname, null);
 	}
 
+	public User(String username, String firstname, String lastname) {
+		this(0, username, firstname, lastname, null);
+	}
+
 	public String getUsername() {
 		return username;
 	}

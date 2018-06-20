@@ -41,17 +41,30 @@ public final class Accounts implements ServletContextListener{
 	public static List<User> getGroupMembers(int groupid){
 		List<User> members = new ArrayList<User>();
 		try(Connection con = src.getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT group_id,id,username,first_name,last_name,role FROM group_members INNER JOIN students ON students.id = group_members.student_id NATURAL JOIN users where group_id = ?");){
+				PreparedStatement stm = con.prepareStatement("SELECT u.username, s.first_name, s.last_name"
+						+ " FROM group_members g INNER JOIN students s ON g.student_id = s.id"
+						+ "  INNER JOIN users u ON s.id = u.id where g.group_id = ?");){
 			stm.setInt(1, groupid);
 			ResultSet rs = stm.executeQuery();
 			while(rs.next()){
-				members.add(new User(rs.getInt("id"), rs.getString("username"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("role")));
+				members.add(new User(rs.getString(1), rs.getString(2), rs.getString(3)));
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
 		return members;
+	}
+
+	public static boolean belongsToGroup(int studentId, int groupId) {
+		try(Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT 1 FROM group_members"
+						+ " WHERE group_id = ? AND student_id = ?");){
+			ps.setInt(1, groupId);
+			ps.setInt(2, studentId);
+			return ps.executeQuery().next();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

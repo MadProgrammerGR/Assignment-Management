@@ -49,10 +49,10 @@ CREATE TABLE assignment_groups (
 	group_id int,
 	filename varchar(50),
 	file bytea_5mb,
-	grade int
+	grade numeric(4,2) default -1
 );
 
-
+------user uploading limits----------
 CREATE OR REPLACE FUNCTION check_rows_count_limit() RETURNS TRIGGER AS $body$
 DECLARE
 	__cnt integer;
@@ -77,6 +77,7 @@ FOR EACH ROW EXECUTE PROCEDURE check_rows_count_limit('group_id', 5);
 CREATE TRIGGER tr_check_assignment_limit
 BEFORE INSERT ON assignments
 FOR EACH ROW EXECUTE PROCEDURE check_rows_count_limit('professor_id', 8);
+--------------------------------------
 
 -----testing
 INSERT INTO users (username, password, role) VALUES

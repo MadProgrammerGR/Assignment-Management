@@ -95,10 +95,25 @@ public final class Assignments implements ServletContextListener{
 		return list;
 	}
 	
-	public static InputStream getAssignmentFileData(int id) {
+	public static InputStream getDescriptionFileData(int id) {
 		try (Connection con = src.getConnection();
 				PreparedStatement ps = con.prepareStatement("SELECT file FROM assignments WHERE id = ?");) {
 			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+				return rs.getBinaryStream("file");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static InputStream getGroupAssignmentFileData(int assignmentId, int groupId) {
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT file FROM assignment_groups"
+						+ " WHERE assignment_id = ? AND group_id = ?");) {
+			ps.setInt(1, assignmentId);
+			ps.setInt(2, groupId);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next())
 				return rs.getBinaryStream("file");
@@ -153,17 +168,15 @@ public final class Assignments implements ServletContextListener{
 		return null;
 	}
 	
-	public static List<GroupAssignment> getGroupsForAssignment(int assignment_id){
+	public static List<GroupAssignment> getGroupAssignments(int assignment_id){
 		List<GroupAssignment> list = new ArrayList<GroupAssignment>();
 		try (Connection con = src.getConnection();
 				PreparedStatement ps = con.prepareStatement(
-					"SELECT group_id, filename, file, grade FROM assignment_groups WHERE assignment_id = ?");)
-		{
+					"SELECT group_id, filename, grade FROM assignment_groups WHERE assignment_id = ?");) {
 			ps.setInt(1, assignment_id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				//TODO: modify GroupAssignment class for null grade
-				GroupAssignment g = new GroupAssignment(assignment_id, rs.getInt("group_id"), rs.getInt("grade"), rs.getString("filename"));
+				GroupAssignment g = new GroupAssignment(assignment_id, rs.getInt("group_id"), rs.getFloat("grade"), rs.getString("filename"));
 				g.setMembers(Accounts.getGroupMembers(rs.getInt("group_id")));
 				list.add(g);
 			}
@@ -173,14 +186,13 @@ public final class Assignments implements ServletContextListener{
 		return list;
 	}
 	
-	//TODO?(no important) psql check grade in range(0,10]
-	public static int setGroupGrade(int assignment_id, int group_id, int grade) {
+	public static int setGroupGrade(int assignment_id, int group_id, float grade) {
 		try(Connection con = src.getConnection();
 				PreparedStatement ps = con.prepareStatement(
 						"UPDATE assignment_groups SET grade = ? WHERE assignment_id = ? AND group_id = ?"); ) {
 				ps.setInt(3, group_id);
 				ps.setInt(2, assignment_id);
-				ps.setInt(1, grade);
+				ps.setFloat(1, grade);
 				return ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
