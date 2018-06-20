@@ -16,4 +16,12 @@ public final class ServletUtils {
 	public static boolean isEmpty(String input) {
 		return input == null || input.trim().isEmpty();
 	}
+	
+	public static Integer integerOrNull(String s) {
+		try{
+			return Integer.parseInt(s);
+		}catch(NumberFormatException e) {
+			return null;
+		}
+	}
 }

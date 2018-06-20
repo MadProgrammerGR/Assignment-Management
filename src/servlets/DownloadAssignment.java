@@ -19,12 +19,12 @@ public class DownloadAssignment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Integer assignmentId = integerOrNull(request.getParameter("id"));
+		Integer assignmentId = ServletUtils.integerOrNull(request.getParameter("id"));
 		if(assignmentId == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		Integer groupId = integerOrNull(request.getParameter("gid"));
+		Integer groupId = ServletUtils.integerOrNull(request.getParameter("gid"));
 		if(groupId == null) {
 			handleProfessorAssignment(request, response, assignmentId);
 		}else{
@@ -78,14 +78,6 @@ public class DownloadAssignment extends HttpServlet {
                  while((bytesRead = fileStream.read(buffer)) != -1) {
             	     out.write(buffer, 0, bytesRead);
                  }
-		}
-	}
-
-	private Integer integerOrNull(String s) {
-		try{
-			return Integer.parseInt(s);
-		}catch(NumberFormatException e) {
-			return null;
 		}
 	}
 

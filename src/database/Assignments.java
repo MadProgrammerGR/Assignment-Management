@@ -22,7 +22,7 @@ public final class Assignments implements ServletContextListener{
 	@Resource(name="jdbc/postgres") //to name tou resource sto context.xml
 	private static DataSource src;
 
-	public static boolean save(String title, String filename, InputStream stream, int profId, int maxGrade, int maxGroupSize, StringBuilder returnMsg) {
+	public static int save(String title, String filename, InputStream stream, int profId, int maxGrade, int maxGroupSize) {
 		try(Connection con = src.getConnection();    
 			PreparedStatement ps = con.prepareStatement("INSERT INTO assignments(title, filename, file, professor_id, max_grade, max_group_size) VALUES(?, ?, ?, ?, ?, ?)"); ) {
 			ps.setString(1, title);
@@ -32,16 +32,12 @@ public final class Assignments implements ServletContextListener{
 			ps.setInt(5, maxGrade);
 			ps.setInt(6, maxGroupSize);
 			ps.executeUpdate();
-			returnMsg.append("Upload successful");
-			return true;
+			return 0;
 		} catch (SQLException e) {
+			if(e.getMessage().contains("bytea_5mb_check"))
+				return -2;
 			e.printStackTrace();
-			if(e.getMessage().contains("bytea_5mb_check")) {
-				returnMsg.append("File size limit is 5MB");
-			} else {
-				returnMsg.append("Error occured during upload");
-			}
-			return false;
+			return -1;
 		}
 	}
 	
