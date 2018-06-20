@@ -1,4 +1,5 @@
 <%@tag pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@attribute name="title" required="true"%>
 <%@attribute name="home_url" required="true"%>
 <%@attribute name="logo" required="false"%>
@@ -46,18 +47,15 @@
   				<i>Managing student's assignments since 2018</i>
   			</span>
 			<span class="footer-right">
-				2018 COPYLEFT <a href="#" onclick="display('about-modal','block')">@OMADARA</a>
+				2018 COPYLEFT 
+				<t:modal_popup button_type="anchor" title="@OMADARA" div_id="about-modal">
+					School project made by:<br>
+					<ul><li>Giorgos</li><li>Julio</li><li>Fanis</li></ul>
+				</t:modal_popup>
 			</span>
 		</div>
 	</footer>
 	
-	<div id="about-modal" class="modal-back">
-		<div class="modal-content">
-			<span class="close" onclick="display('about-modal','none')">&times;</span>
-			School project made by:<br>
-			<ul><li>Giorgos</li><li>Julio</li><li>Fanis</li></ul>
-		</div>
-	</div>
 </div>
 </body>
 </html>

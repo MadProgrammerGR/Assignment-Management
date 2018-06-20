@@ -26,17 +26,12 @@
 
 		<div class="row">
 			<div class="col-l-last">
-				<a href="#" onclick="display('noAcc-modal','block')">Don't have an account?</a>
+				<t:modal_popup button_type="anchor" title="Don't have an account?" div_id="noAcc-modal">
+					<p>Please contact your <a href="mailto:secretary@university.gr?Subject=Request%20Account" target="_top">secretary</a> 
+					or <a href="mailto:admin@system.gr?Subject=Request%20Account" target="_top">site admin.</a></p>
+				</t:modal_popup>
 			</div>
 		</div>
 	</form>
 
-	<div id="noAcc-modal" class="modal-back">
-		<div class="modal-content">
-			<span class="close" onclick="display('noAcc-modal','none')">&times;</span>
-			<p>Please contact your <a href="mailto:secretary@university.gr?Subject=Request%20Account" target="_top">secretary</a> 
-			 or <a href="mailto:admin@system.gr?Subject=Request%20Account" target="_top">site admin.</a></p>
-		</div>
-	</div>
-	
 </t:template>
