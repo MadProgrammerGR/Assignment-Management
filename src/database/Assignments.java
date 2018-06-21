@@ -149,13 +149,25 @@ public final class Assignments implements ServletContextListener{
 		return -1;
 	}
 	
-	public static GroupAssignment getGroupAssignment(int group_id,int assignment_id) {
+	public static void createAssignmentGroup(int assignment_id,int group_id){
+		try (Connection con = src.getConnection();
+				PreparedStatement cag = con.prepareStatement(
+						"INSERT INTO assignment_groups(assignment_id,group_id) VALUES (?,?)");){
+			cag.setInt(1, assignment_id);
+			cag.setInt(2, group_id);
+			cag.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static GroupAssignment getGroupAssignment(int student_id,int assignment_id) {
 		try (Connection con = src.getConnection();
 				PreparedStatement ps = con.prepareStatement(
 						"SELECT student_id, group_id, assignment_id, filename, grade FROM group_members "+
 				"NATURAL JOIN assignment_groups WHERE student_id = ? AND assignment_id = ?");)
 		{
-			ps.setInt(1, group_id);
+			ps.setInt(1, student_id);
 			ps.setInt(2 ,assignment_id);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {

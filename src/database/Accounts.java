@@ -38,6 +38,40 @@ public final class Accounts implements ServletContextListener{
 		return null;
 	}
 	
+	public static void createNewGroup(List<Integer> userids) {
+		try(Connection con = src.getConnection()){
+			PreparedStatement stm1 = con.prepareStatement("SELECT MAX(group_id)+1 FROM group_members");
+			int ngid = stm1.executeQuery().getInt(1);
+			String sqlinsert = "INSERT INTO group_members VALUES (ngid, ?)";
+			for(int i=1;i<userids.size();i++) sqlinsert+= ",(ngid,?)";
+			PreparedStatement stm2 = con.prepareStatement(sqlinsert);
+			for(int i=0;i<userids.size();++i){
+				stm2.setInt(i, userids.get(i-1).intValue());
+			}
+			stm2.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static int getUserId(String username){
+		try(Connection con = src.getConnection();
+				PreparedStatement stm = con.prepareStatement(
+						"Select id,username "
+						+ "from users "
+						+ "where username = ? and role = 'student'"
+						);
+				)
+		{
+			stm.setString(1, username);
+			ResultSet rs = stm.executeQuery();
+			if(rs.next()) return rs.getInt("id");
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public static List<User> getGroupMembers(int groupid){
 		List<User> members = new ArrayList<User>();
 		try(Connection con = src.getConnection();

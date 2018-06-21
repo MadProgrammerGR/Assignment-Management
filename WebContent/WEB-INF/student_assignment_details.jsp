@@ -16,8 +16,19 @@
 	
 	<!-- TODO: dhmiourgia h provolh group, anevasma ergasias kai provolh va8mou -->
 	<%if(ga == null) {%>
-	<href ="createGroup">Create Group</href>
+		<input name=user0 value=<%=user.getUsername()%> readonly><br>
+		<% for(int i=1;i<pa.getMaxGroupSize();i++){%>
+		<input name=user<%=i%>><br>
+		<%} %>
+		<input type="submit" method="post" value="Create group"  action="${pageContext.request.contextPath}/student/create_group">
 	<%} else { %>
+	<form>
+	<input type="file" name = "file" <%if(ga.getFilename()!="" ) {%> value=<%=ga.getFilename() %><%} %> >
+	<input type="hidden" name = "id" value=<%=pa.getId() %>>
+	<input type="hidden" name = "gid" value=<%=ga.getGroup_id() %>>
+	<input type="submit" method = "post" value="Send file" action="${pageContext.request.contextPath}/student/uploadAssignment">
+	
+	</form>
 	<br>
 	<%List<User> members = Accounts.getGroupMembers(ga.getGroup_id());%>
 	<table>
