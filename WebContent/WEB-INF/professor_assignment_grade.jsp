@@ -23,16 +23,36 @@
 	<tr><th>Group Members</th><th>Assignment</th><th>Grade</th>
 	<%for(GroupAssignment g : lg) {%>
 		<tr>
-		<td><%for(User member : g.getMembers()) {%>
+		<td id="gmem_<%=g.getGroup_id()%>"><%for(User member : g.getMembers()) {%>
 		<%=member.getUsername()%> | <%=member.getFirstname()%> <%=member.getLastname()%><br>
 		<%}%></td>
-		<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&gid=<%=g.getGroup_id()%>" download="<%=g.getFilename()%>"><i class="fa fa-download"></i></a></td>
+		<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&amp;gid=<%=g.getGroup_id()%>" download="<%=g.getFilename()%>"><i class="fa fa-download"></i></a></td>
 		
 		<!-- TODO input grade form with post-->
-		<td><a href="${pageContext.request.contextPath}/professor/grade?id=<%=pa.getId()%>&amp;gid=<%=g.getGroup_id()%>&amp;grade=2"><%=g.getGrade()%></a> TODO:popup set grade</td>
+		<td><a href="#" onclick="fillSetGradeForm(<%=pa.getId()%>,<%=g.getGroup_id()%>)"><%=g.getGrade()%></a></td>
 		</tr>
 	<%} %>
 	</table>
+
+	<t:modal_popup button_type="NULL" title="" div_id="gradeGroup-modal">
+		<form action="${pageContext.request.contextPath}/professor/grade" method="post">
+			<input type="number" id="inp_id" name="id" hidden/>
+			<input type="number" id="inp_gid" name="gid" hidden/>
+			<h2>Set Grade for Group</h2>
+			(todo:?css todo:?prof/grade forward uresult error)<br>
+			<div id="gradeGroup_members"></div><br>
+			<input type="number" id="inp_grade" name="grade" min="1" max="10" size="5" placeholder="Grade" step="0.01"><br>
+			<input type="submit" value="Set" class="button"/>
+		</form>
+		<script>
+		function fillSetGradeForm(id,gid){
+			document.getElementById("inp_id").value = id;
+			document.getElementById("inp_gid").value = gid;
+			document.getElementById("gradeGroup_members").innerHTML = document.getElementById("gmem_"+gid).innerHTML;
+			display('gradeGroup-modal','block');
+		}
+		</script>
+	</t:modal_popup>
 	<%} %>
 </c:set>
 
