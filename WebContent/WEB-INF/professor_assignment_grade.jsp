@@ -13,7 +13,7 @@
 
 <c:set var="bodyContent">
 	<h3 style="text-align: center;"><%=pa.getTitle()%></h3>
-	<br><p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>">Description <i class="fa fa-download"></i></a></p>
+	<p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>">Description <i class="fa fa-download"></i></a></p>
 			
 	<%if(lg.isEmpty()) {%>
 		<p><i>Waiting for students to upload assignments...</i></p>		
@@ -23,7 +23,7 @@
 	<tr><th>Group Members</th><th>Assignment</th><th>Grade</th>
 	<%for(GroupAssignment g : lg) {%>
 		<tr>
-		<td id="gmem_<%=g.getGroup_id()%>"><%for(User member : g.getMembers()) {%>
+		<td><%for(User member : g.getMembers()) {%>
 		<%=member.getUsername()%> | <%=member.getFirstname()%> <%=member.getLastname()%><br>
 		<%}%>
 		</td>
@@ -59,7 +59,7 @@
 				</t:modal_popup>
 				</td>
 			<% } %>
-		<%} %>
+		<% } %>
 		</tr>
 	<% } %>
 	</table>

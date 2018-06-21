@@ -11,10 +11,14 @@
 	<t:modal_popup button_type="button" title="Create Assignment" div_id="createAssignment-modal">
 		<h2>Create a new assignment</h2><br>
 		<form action="${pageContext.request.contextPath}/professor/uploadAssignment" method="post" enctype="multipart/form-data">
-		    <label>Title:</label><input type="text" name="title" placeholder="e.g. Software Technology - 1st" size="30"/><br>
-		    <label>Max grade:</label><input type="number" name="max_grade" min="1" max="10" value="3" size="5"><br>
-		    <label>Max group size:</label><input type="number" name="max_group_size" min="1" max="10" value="3"><br>
-		    <label>Description file:</label><input type="file" name="description_file"/><br>
+		    <label>Title</label><br>
+		    <input type="text" name="title" placeholder="e.g. Software Technology - 1st" size="30"/><br>
+		    <label>Max grade</label><br>
+		    <input type="number" name="max_grade" min="1" max="10" value="3" size="5"><br><br>
+		    <label>Max group size</label><br>
+		    <input type="number" name="max_group_size" min="1" max="10" value="3"><br><br>
+		    <label>Description file</label><br>
+		    <input type="file" name="description_file"/><br><br>
 		    <input type="submit" value="Upload" class="button"/>
 		</form>
 	</t:modal_popup>
