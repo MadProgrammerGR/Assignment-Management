@@ -26,9 +26,13 @@
 		<td id="gmem_<%=g.getGroup_id()%>"><%for(User member : g.getMembers()) {%>
 		<%=member.getUsername()%> | <%=member.getFirstname()%> <%=member.getLastname()%><br>
 		<%}%></td>
-		<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&amp;gid=<%=g.getGroup_id()%>" download="<%=g.getFilename()%>"><i class="fa fa-download"></i></a></td>
-		
-		<!-- TODO input grade form with post-->
+		<td>
+		<%if(g.getFilename()!=null){%>
+			<a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&amp;gid=<%=g.getGroup_id()%>" download="<%=g.getFilename()%>"><i class="fa fa-download"></i></a>
+		<%} else {%>
+			<i class="fa fa-spinner" aria-hidden="true"></i>
+		<%} %>
+		</td>
 		<td><a href="#" onclick="fillSetGradeForm(<%=pa.getId()%>,<%=g.getGroup_id()%>)"><%=g.getGrade()%></a></td>
 		</tr>
 	<%} %>
