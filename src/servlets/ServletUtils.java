@@ -24,4 +24,12 @@ public final class ServletUtils {
 			return null;
 		}
 	}
+
+	public static Float floatOrNull(String s) {
+		try{
+			return Float.parseFloat(s);
+		}catch(NumberFormatException e) {
+			return null;
+		}
+	}
 }

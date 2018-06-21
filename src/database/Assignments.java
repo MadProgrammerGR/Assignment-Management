@@ -224,5 +224,18 @@ public final class Assignments implements ServletContextListener{
 			return -1;
 		}
 	}
+
+	public static int getMaxGradeOnly(int assignmentId) {
+		try (Connection con = src.getConnection();
+				PreparedStatement ps = con.prepareStatement("SELECT max_grade FROM assignments WHERE id = ?");) {
+			ps.setInt(1, assignmentId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+				return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 }
