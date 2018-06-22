@@ -7,7 +7,7 @@
 	<% User user = (User)session.getAttribute("user_info"); %>
 	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
 	
-	<div class="message message-${status}">${message}</div>
+	<t:message status="${status}" text="${message}"/>
 	<% List<ProfessorAssignment> list = Assignments.getAll(); %>
 	<% if(list.isEmpty()) { %>
 		<p><i>No assignments available at the moment.</i></p>

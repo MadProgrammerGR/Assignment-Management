@@ -13,6 +13,7 @@
 <c:set var="bodyContent">
 	<h3 style="text-align: center;"><%=pa.getTitle()%></h3>
 	<p style="text-align: right;"><i>Created by <%=pa.getProf().getLastname()%> <%=pa.getProf().getFirstname()%></i></p>
+	<t:message status="${status}" text="${message}"/>
 	<p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>">Description <i class="fa fa-download"></i></a></p>
 	
 	
@@ -29,29 +30,29 @@
 		</form>
 	
 	<%} else { //exei dhmiourgh8ei %>
-		<p>Members on your group</p>
+		<p>Members in your group</p>
 		<table>
 			<tr><th>AM/Username</th><th>First name</th><th>Last name</th></tr>
 			<%for(User member : ga.getMembers()) {%>
 			<tr><td><%=member.getUsername()%></td><td><%=member.getFirstname()%></td><td><%=member.getLastname()%></td></tr>
 			<% } %>
-		</table>
+		</table><br/>
 	
 		<%if(ga.getFilename()==null) { //den exoun anevasei akoma ergasia %>
 			<form action="${pageContext.request.contextPath}/student/uploadAssignment" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id" value="<%=pa.getId()%>">
 			<input type="hidden" name="gid" value="<%=ga.getGroup_id()%>">
 			<label>Assignment files</label><br/>
-			<input type="file" name="file"/><br/>
+			<input type="file" name="file"/><br/><br/>
 			<input type="submit" value="Upload" class="button">
 			</form>
 			
 		<%} else { //exoun anevasei%>
 			<a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&amp;gid=<%=ga.getGroup_id()%>" download="<%=ga.getFilename()%>">
-				Uploaded files<i class="fa fa-download"></i></a>
+				Uploaded files <i class="fa fa-download"></i></a>
 		
-			<%if(ga.getGrade()!=1) { //exei va8mologh8ei %>
-				<p>Your grade is <%=ga.getGrade()%> out of <%=pa.getMaxGrade()%>.</p> 
+			<%if(ga.getGrade()!=-1) { //exei va8mologh8ei %>
+				<p><b>Your grade is <%=ga.getGrade()%> out of <%=pa.getMaxGrade()%>.</b></p> 
 			<%} else { //den exei va8mologh8ei %>
 				<p><i>Professor hasn't graded this assignment yet.</i></p>
 			<% } %>

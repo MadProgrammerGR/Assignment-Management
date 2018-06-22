@@ -13,6 +13,7 @@
 
 <c:set var="bodyContent">
 	<h3 style="text-align: center;"><%=pa.getTitle()%></h3>
+	<t:message status="${status}" text="${message}"/>
 	<p><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>">Description <i class="fa fa-download"></i></a></p>
 			
 	<%if(lg.isEmpty()) {%>
@@ -44,12 +45,13 @@
 					<form action="${pageContext.request.contextPath}/professor/grade" method="post">
 						<input type="hidden" name="id" value="<%=pa.getId()%>"/>
 						<input type="hidden" name="gid" value="<%=g.getGroup_id()%>"/>
-						<h2>Set Grade for Group:</h2>
-						<ul>
-						<% for(User member : g.getMembers()) {%>
-							<li><%=member.getUsername()%> | <%=member.getFirstname()%> <%=member.getLastname()%></li>
-						<% } %>
-						</ul>
+						<h2>Grade this group</h2>
+						<table>
+							<tr><th>AM/Username</th><th>First name</th><th>Last name</th></tr>
+							<%for(User member : g.getMembers()) {%>
+							<tr><td><%=member.getUsername()%></td><td><%=member.getFirstname()%></td><td><%=member.getLastname()%></td></tr>
+							<% } %>
+						</table><br/>
 						<input type="number" name="grade" min="1" max="<%=pa.getMaxGrade()%>" size="5" placeholder="Grade" step="0.01"><br>
 						<input type="submit" value="Set" class="button"/>
 					</form>

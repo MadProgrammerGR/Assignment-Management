@@ -7,7 +7,7 @@
 	<% User user = (User)session.getAttribute("user_info"); %>
 	<h3>Welcome <%=user.getLastname()%> <%=user.getFirstname()%></h3>
 	
-	<div class="message message-${status}">${message}</div><br>
+	<t:message status="${status}" text="${message}"/>
 	<t:modal_popup button_type="button" title="Create Assignment" div_id="createAssignment-modal">
 		<h2>Create a new assignment</h2><br>
 		<form action="${pageContext.request.contextPath}/professor/uploadAssignment" method="post" enctype="multipart/form-data">

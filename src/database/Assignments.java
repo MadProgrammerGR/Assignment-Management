@@ -43,13 +43,13 @@ public final class Assignments implements ServletContextListener{
 	
 	public static int saveGroupAssignment(int assignmentId, int groupId, InputStream stream, String filename) {
 		try(Connection con = src.getConnection();    
-				PreparedStatement ps = con.prepareStatement("INSERT INTO assignment_groups(assignment_id, group_id, file, filename) VALUES(?, ?, ?, ?)"); ) {
-			ps.setInt(1, assignmentId);
-			ps.setInt(2, groupId);
-			ps.setBinaryStream(3, stream);
-			ps.setString(4, filename);
-			ps.executeUpdate();
-			return 0;
+				PreparedStatement ps = con.prepareStatement("UPDATE assignment_groups SET file = ?, filename = ?"
+						+ " WHERE assignment_id = ? AND group_id = ?"); ) {
+			ps.setBinaryStream(1, stream);
+			ps.setString(2, filename);
+			ps.setInt(3, assignmentId);
+			ps.setInt(4, groupId);
+			return ps.executeUpdate();
 		} catch (SQLException e) {
 			if(e.getMessage().contains("bytea_5mb_check"))
 				return -2;
@@ -161,19 +161,18 @@ public final class Assignments implements ServletContextListener{
 		}
 	}
 	
-	public static GroupAssignment getGroupAssignment(int student_id,int assignment_id) {
+	public static GroupAssignment getGroupAssignment(int student_id, int assignment_id) {
 		try (Connection con = src.getConnection();
-				PreparedStatement ps = con.prepareStatement(
-						"SELECT student_id, group_id, assignment_id, filename, grade FROM group_members "+
-				"NATURAL JOIN assignment_groups WHERE student_id = ? AND assignment_id = ?");)
-		{
+				PreparedStatement ps = con.prepareStatement("SELECT g.group_id, a.grade, a.filename"
+						+ " FROM group_members g INNER JOIN assignment_groups a ON g.group_id=a.group_id"
+						+ " WHERE student_id = ? AND assignment_id = ?");) {
 			ps.setInt(1, student_id);
 			ps.setInt(2 ,assignment_id);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-				GroupAssignment ga = new GroupAssignment(rs.getInt("assignment_id"),rs.getInt("group_id"),rs.getFloat("grade"),rs.getString("filename"));
-				ga.setMembers(Accounts.getGroupMembers(ga.getGroup_id()));
-				return ga;
+				int gid = rs.getInt(1);
+				List<User> members = Accounts.getGroupMembers(gid);
+				return new GroupAssignment(assignment_id, gid, rs.getFloat(2), rs.getString(3), members);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -189,9 +188,10 @@ public final class Assignments implements ServletContextListener{
 			ps.setInt(1, assignment_id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				GroupAssignment g = new GroupAssignment(assignment_id, rs.getInt("group_id"), rs.getFloat("grade"), rs.getString("filename"));
-				g.setMembers(Accounts.getGroupMembers(rs.getInt("group_id")));
-				list.add(g);
+				int gid = rs.getInt("group_id");
+				List<User> members = Accounts.getGroupMembers(gid);
+				GroupAssignment ga = new GroupAssignment(assignment_id, gid, rs.getFloat("grade"), rs.getString("filename"), members);
+				list.add(ga);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

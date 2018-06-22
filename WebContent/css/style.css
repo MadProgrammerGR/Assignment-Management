@@ -81,6 +81,7 @@ a:link, a:visited {
 	color: #5b8bd8;
 }
 
+/*******************************HEADER************************************/
 header {
 	color: #ADADAD;
 	text-align: center;
@@ -100,6 +101,7 @@ header a:active {
 	text-decoration: underline;
 }
 
+/*******************************BUTTON***********************************/
 button, .button {
     background-color: #2b5aa5;
     border: none;
@@ -123,6 +125,7 @@ button:hover, .button:hover {
   background-color: #3d6dba;
 }
 
+/*****************************ARTICLE*********************************/
 article, .modal-content {
 	margin: auto;
 	width: 75%;
@@ -163,6 +166,8 @@ article tr:nth-child(odd){
 article tr:hover{
 	background-color: #c6c9ce;
 }
+
+/*****************FOOTER*************************************************/
 footer, footer:before {
 	background-color: #cccccc;
 	height: 20px;

@@ -74,7 +74,7 @@ public final class Accounts implements ServletContextListener{
 		try(Connection con = src.getConnection();
 				PreparedStatement stm = con.prepareStatement("SELECT u.username, s.first_name, s.last_name"
 						+ " FROM group_members g INNER JOIN students s ON g.student_id = s.id"
-						+ "  INNER JOIN users u ON s.id = u.id where g.group_id = ?");){
+						+ "  INNER JOIN users u ON s.id = u.id WHERE g.group_id = ?");){
 			stm.setInt(1, groupid);
 			ResultSet rs = stm.executeQuery();
 			while(rs.next()){

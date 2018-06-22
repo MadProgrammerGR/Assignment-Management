@@ -9,7 +9,7 @@
 			<div class="lin-title">Login</div>
 		</div>
 		<div class="row">
-			<div class="message message-${status}">${message}</div>
+			<t:message status="${status}" text="${message}"/>
 		</div>
 		<div class="form-input row">
 			<input id="lin-username" type="text" name="username" placeholder="Username" autofocus="autofocus">

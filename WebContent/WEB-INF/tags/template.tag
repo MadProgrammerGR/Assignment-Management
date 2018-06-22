@@ -49,7 +49,7 @@
 			<span class="footer-right">
 				2018 COPYLEFT 
 				<t:modal_popup button_type="anchor" title="@OMADARA" div_id="about-modal">
-					School project made by:<br>
+					<b>School project made by</b><br>
 					<ul><li>Giorgos</li><li>Julio</li><li>Fanis</li></ul>
 				</t:modal_popup>
 			</span>
