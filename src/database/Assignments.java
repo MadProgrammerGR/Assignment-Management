@@ -171,21 +171,9 @@ public final class Assignments implements ServletContextListener{
 			ps.setInt(2 ,assignment_id);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-				int gid = rs.getInt("group_id");
-				int aid = rs.getInt("assignment_id");
-				String fn;
-				int grade;
-				try{
-					fn = rs.getString("filename");
-				} catch(Exception e) {
-					fn = " ";
-				}
-				try{
-					grade = rs.getInt("grade");
-				}catch(Exception e){
-					grade = -1;
-				}
-				return new GroupAssignment(aid,gid,grade,fn);
+				GroupAssignment ga = new GroupAssignment(rs.getInt("assignment_id"),rs.getInt("group_id"),rs.getFloat("grade"),rs.getString("filename"));
+				ga.setMembers(Accounts.getGroupMembers(ga.getGroup_id()));
+				return ga;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

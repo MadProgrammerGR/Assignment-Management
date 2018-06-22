@@ -37,7 +37,7 @@
 			<% } %>
 		</table>
 	
-		<%if(ga.getFilename()!=null) { //den exoun anevasei akoma ergasia %>
+		<%if(ga.getFilename()==null) { //den exoun anevasei akoma ergasia %>
 			<form action="${pageContext.request.contextPath}/student/uploadAssignment" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id" value="<%=pa.getId()%>">
 			<input type="hidden" name="gid" value="<%=ga.getGroup_id()%>">
