@@ -23,8 +23,9 @@
 		   <li>Maximum group size is <%=pa.getMaxGroupSize()%>.</li></ul>
 		   
 		<form action="${pageContext.request.contextPath}/student/createGroup" method="post">
-		<%for(int i=0; i<pa.getMaxGroupSize()-1; i++) {%>
-			<input type="text" name="member" placeholder="Member <%=i+1%>" size="20"/><br/>
+		<input type="hidden" name="id" value="<%=pa.getId()%>">
+		<%for(int i=1; i<pa.getMaxGroupSize(); i++) {%>
+			<input type="text" name="member" placeholder="Member <%=i%>" size="20"/><br/>
 		<% } %>
 		<input type="submit" value="Create group" class="button"/><br/>
 		</form>
