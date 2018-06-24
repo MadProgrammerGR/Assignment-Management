@@ -22,15 +22,16 @@ public final class Assignments implements ServletContextListener{
 	@Resource(name="jdbc/postgres") //to name tou resource sto context.xml
 	private static DataSource src;
 
-	public static int save(String title, String filename, InputStream stream, int profId, int maxGrade, int maxGroupSize) {
+	public static int save(String title, String filename, InputStream stream, int profId, int maxGrade, int maxGroupSize, String due_date) {
 		try(Connection con = src.getConnection();    
-			PreparedStatement ps = con.prepareStatement("INSERT INTO assignments(title, filename, file, professor_id, max_grade, max_group_size) VALUES(?, ?, ?, ?, ?, ?)"); ) {
+			PreparedStatement ps = con.prepareStatement("INSERT INTO assignments(title, filename, file, professor_id, max_grade, max_group_size, due_date) VALUES(?, ?, ?, ?, ?, ?, ?::date)"); ) {
 			ps.setString(1, title);
 			ps.setString(2, filename);
 			ps.setBinaryStream(3, stream);
 			ps.setInt(4, profId);
 			ps.setInt(5, maxGrade);
 			ps.setInt(6, maxGroupSize);
+			ps.setString(7, due_date);
 			ps.executeUpdate();
 			return 0;
 		} catch (SQLException e) {
@@ -43,7 +44,7 @@ public final class Assignments implements ServletContextListener{
 	
 	public static int saveGroupAssignment(int assignmentId, int groupId, InputStream stream, String filename) {
 		try(Connection con = src.getConnection();    
-				PreparedStatement ps = con.prepareStatement("UPDATE assignment_groups SET file = ?, filename = ?"
+				PreparedStatement ps = con.prepareStatement("UPDATE assignment_groups SET file = ?, filename = ?, upload_date=CURRENT_DATE"
 						+ " WHERE assignment_id = ? AND group_id = ?"); ) {
 			ps.setBinaryStream(1, stream);
 			ps.setString(2, filename);
@@ -60,14 +61,14 @@ public final class Assignments implements ServletContextListener{
 	
 	public static ProfessorAssignment get(int id) {
 		try (Connection con = src.getConnection();
-				PreparedStatement ps = con.prepareStatement("SELECT a.title, a.filename, a.max_grade, a.max_group_size, p.first_name, p.last_name"
+				PreparedStatement ps = con.prepareStatement("SELECT a.title, a.filename, a.max_grade, a.max_group_size, p.first_name, p.last_name, a.create_date, a.due_date"
 						+ " FROM assignments a INNER JOIN professors p on a.professor_id=p.id"
 						+ " WHERE a.id = ?");) {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				User prof = new User(rs.getString(5), rs.getString(6));
-				return new ProfessorAssignment(id, rs.getString(1), rs.getString(2), prof, rs.getInt(3), rs.getInt(4));
+				return new ProfessorAssignment(id, rs.getString(1), rs.getString(2), prof, rs.getInt(3), rs.getInt(4), rs.getDate(7), rs.getDate(8));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,11 +96,11 @@ public final class Assignments implements ServletContextListener{
 	public static List<ProfessorAssignment> getFromProfessor(int profId) {
 		List<ProfessorAssignment> list = new ArrayList<ProfessorAssignment>();
 		try (Connection con = src.getConnection();
-				PreparedStatement ps = con.prepareStatement("SELECT id, title, filename FROM assignments WHERE professor_id = ? ORDER BY title");) {
+				PreparedStatement ps = con.prepareStatement("SELECT id, title, filename, create_date, due_date FROM assignments WHERE professor_id = ? ORDER BY title");) {
 			ps.setInt(1, profId);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				ProfessorAssignment pa = new ProfessorAssignment(rs.getInt(1), rs.getString(2), rs.getString(3));
+				ProfessorAssignment pa = new ProfessorAssignment(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5));
 				list.add(pa);
 			}
 		} catch (SQLException e) {
@@ -163,7 +164,7 @@ public final class Assignments implements ServletContextListener{
 	
 	public static GroupAssignment getGroupAssignment(int student_id, int assignment_id) {
 		try (Connection con = src.getConnection();
-				PreparedStatement ps = con.prepareStatement("SELECT g.group_id, a.grade, a.filename"
+				PreparedStatement ps = con.prepareStatement("SELECT g.group_id, a.grade, a.filename, a.upload_date"
 						+ " FROM group_members g INNER JOIN assignment_groups a ON g.group_id=a.group_id"
 						+ " WHERE student_id = ? AND assignment_id = ?");) {
 			ps.setInt(1, student_id);
@@ -172,7 +173,7 @@ public final class Assignments implements ServletContextListener{
 			if(rs.next()) {
 				int gid = rs.getInt(1);
 				List<User> members = Accounts.getGroupMembers(gid);
-				return new GroupAssignment(assignment_id, gid, rs.getFloat(2), rs.getString(3), members);
+				return new GroupAssignment(assignment_id, gid, rs.getFloat(2), rs.getString(3), members, rs.getDate(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -184,13 +185,14 @@ public final class Assignments implements ServletContextListener{
 		List<GroupAssignment> list = new ArrayList<GroupAssignment>();
 		try (Connection con = src.getConnection();
 				PreparedStatement ps = con.prepareStatement(
-					"SELECT group_id, filename, grade FROM assignment_groups WHERE assignment_id = ?");) {
+					"SELECT group_id, filename, grade, upload_date FROM assignment_groups WHERE assignment_id = ?");) {
 			ps.setInt(1, assignment_id);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				int gid = rs.getInt("group_id");
 				List<User> members = Accounts.getGroupMembers(gid);
-				GroupAssignment ga = new GroupAssignment(assignment_id, gid, rs.getFloat("grade"), rs.getString("filename"), members);
+				System.out.println(rs.getDate("upload_date"));
+				GroupAssignment ga = new GroupAssignment(assignment_id, gid, rs.getFloat("grade"), rs.getString("filename"), members, rs.getDate("upload_date"));
 				list.add(ga);
 			}
 		} catch (SQLException e) {

@@ -4,6 +4,7 @@
 <%@ page import="java.util.*" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
 	User user = (User)session.getAttribute("user_info");
@@ -21,7 +22,7 @@
 	<%} else { %>
 	<br>
 	<table>
-	<tr><th>Group Members</th><th>Assignment</th><th>Grade</th>
+	<tr><th>Group Members</th><th>Uploaded at</th><th>Files</th><th>Grade</th>
 	<%for(GroupAssignment g : lg) {%>
 		<tr>
 		<td><%for(User member : g.getMembers()) {%>
@@ -29,11 +30,11 @@
 		<%}%>
 		</td>
 		<%if(g.getFilename()==null){ //den thn exoun anevasei akoma %>
-			<td>
-				<i class="fa fa-spinner" aria-hidden="true"></i>
-			</td>
-			<td></td>
+			<td><i class="fa fa-spinner" aria-hidden="true"></i></td>
+			<td><i class="fa fa-spinner" aria-hidden="true"></i></td>
+			<td><i class="fa fa-spinner" aria-hidden="true"></i></td>
 		<%} else { //thn exoun anevasei %>
+			<td><fmt:formatDate value="<%=g.getUploaded()%>" pattern="dd-MM-yyyy"/></td>
 			<td>
 			<a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>&amp;gid=<%=g.getGroup_id()%>" download="<%=g.getFilename()%>"><i class="fa fa-download"></i></a>
 			</td>

@@ -2,6 +2,7 @@
 <%@ page import="java.util.*, beans.*, database.*" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:set var="bodyContent">
 	<% User user = (User)session.getAttribute("user_info"); %>
@@ -13,6 +14,8 @@
 		<form action="${pageContext.request.contextPath}/professor/uploadAssignment" method="post" enctype="multipart/form-data">
 		    <label>Title</label><br>
 		    <input type="text" name="title" placeholder="e.g. Software Technology - 1st" size="30"/><br>
+		    <label>Deadline</label><br>
+		    <input type="date" name="deadline" min="<fmt:formatDate value="<%=new Date()%>" pattern="dd-MM-yyyy"/>" value="<fmt:formatDate value="<%=new Date()%>" pattern="dd-MM-yyyy"/>"><br><br>
 		    <label>Max grade</label><br>
 		    <input type="number" name="max_grade" min="1" max="10" value="3" size="5"><br><br>
 		    <label>Max group size</label><br>
@@ -28,10 +31,12 @@
 		<p><i>No assignments have been created yet.</i></p>
 	<% }else{ %>
 		<table>
-		<tr><th>Assignment</th><th style="width:1%;white-space:nowrap;">Description</th></tr>
+		<tr><th>Assignment</th><th>Created</th><th>Deadline</th><th style="width:1%;white-space:nowrap;">Description</th></tr>
 		<% for(ProfessorAssignment pa : list) { %>
 		<tr>
 			<td><a href="${pageContext.request.contextPath}/professor/grade?id=<%=pa.getId()%>"><%=pa.getTitle()%></a></td>
+			<td><fmt:formatDate value="<%=pa.getCreated()%>" pattern="dd-MM-yyyy"/></td>
+			<td><fmt:formatDate value="<%=pa.getDeadline()%>" pattern="dd-MM-yyyy"/></td>
 			<td><a href="${pageContext.request.contextPath}/assignment/download?id=<%=pa.getId()%>" download="<%=pa.getFilename()%>"><i class="fa fa-download"></i></a></td>
 		</tr>
 		<% } %>

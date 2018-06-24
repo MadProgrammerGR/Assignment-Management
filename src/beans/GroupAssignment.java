@@ -1,4 +1,5 @@
 package beans;
+import java.util.Date;
 import java.util.List;
 
 public class GroupAssignment {
@@ -7,13 +8,15 @@ public class GroupAssignment {
 	private final float grade;
 	private final String filename;
 	private final List<User> members;
+	private final Date uploaded;
 
-	public GroupAssignment(int aid, int gid, float grade, String filename, List<User> members) {
+	public GroupAssignment(int aid, int gid, float grade, String filename, List<User> members, Date uploaded) {
 		this.assignment_id = aid;
 		this.group_id = gid;
 		this.grade = grade;
 		this.filename = filename;
 		this.members = members;
+		this.uploaded = uploaded;
 	}
 
 	public int getAssignment_id() {
@@ -30,5 +33,8 @@ public class GroupAssignment {
 	}
 	public List<User> getMembers(){
 		return members;
+	}
+	public Date getUploaded() {
+		return uploaded;
 	}
 }

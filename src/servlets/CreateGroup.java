@@ -2,7 +2,9 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +27,7 @@ public class CreateGroup extends HttpServlet {
 		if(unames==null) 
 			unames = new String[0];
 		
-		List<Integer> studentIDs = new ArrayList<Integer>(); 
+		Set<Integer> studentIDs = new HashSet<Integer>(); //Set to remove duplicates
 		for (String u : unames) {
 			if(u.isEmpty()) continue;
 			int id = Accounts.getStudentId(u);
@@ -41,7 +43,7 @@ public class CreateGroup extends HttpServlet {
 		User user = (User)request.getSession(false).getAttribute("user_info");
 		studentIDs.add(user.getId());
 		
-		int gid = Accounts.createNewGroup(studentIDs);
+		int gid = Accounts.createNewGroup(new ArrayList<Integer>(studentIDs)); //convert to list
 		Assignments.createAssignmentGroup(aid, gid);
 		ServletUtils.forwardMessage(request, response, "/student/assignment", "success", "Successful registration of group");
 	}

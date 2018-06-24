@@ -39,9 +39,9 @@ CREATE TABLE assignments (
 	file bytea_5mb,
 	professor_id int references professors(id) on delete cascade,
 	max_grade int not null,
-	max_group_size int
-	--create_date date,
-	--due_date date,
+	max_group_size int,
+	create_date date default CURRENT_DATE,
+	due_date date
 );
 
 CREATE TABLE assignment_groups (
@@ -49,7 +49,8 @@ CREATE TABLE assignment_groups (
 	group_id int,
 	filename varchar(50),
 	file bytea_5mb,
-	grade numeric(4,2) default -1
+	grade numeric(4,2) default -1,
+	upload_date date
 );
 
 ------user uploading limits----------

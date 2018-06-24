@@ -30,8 +30,9 @@ public final class Accounts implements ServletContextListener{
 			if (!rs.next()) return null;
 			String role = rs.getString("role");
 			int id = rs.getInt("id");
-			ResultSet rs2 = stm2.executeQuery("SELECT * FROM "+role+"s WHERE id = "+id); rs2.next();
-			return new User(id, username, rs2.getString("first_name"), rs2.getString("last_name"), role);
+			ResultSet rs2 = stm2.executeQuery("SELECT * FROM "+role+"s WHERE id = "+id); 
+			if (rs2.next())
+				return new User(id, username, rs2.getString("first_name"), rs2.getString("last_name"), role);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

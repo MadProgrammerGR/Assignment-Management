@@ -44,7 +44,7 @@ public class UploadAssignment extends HttpServlet {
 		}else{
 			InputStream content = filePart.getInputStream();
 			User prof = (User) request.getSession().getAttribute("user_info");
-			int sc = Assignments.save(title, filename, content, prof.getId(), maxGrade, maxGroupSize);
+			int sc = Assignments.save(title, filename, content, prof.getId(), maxGrade, maxGroupSize, request.getParameter("deadline"));
 			if (sc == -2) {
 				ServletUtils.forwardMessage(request, response, "/professor/home.jsp", "error", "File size limit is 5MB");
 			} else if (sc == -1) {

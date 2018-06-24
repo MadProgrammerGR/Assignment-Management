@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.Date;
+
 public class ProfessorAssignment {
 	private final int id;
 	private final String title;
@@ -7,22 +9,26 @@ public class ProfessorAssignment {
 	private final User prof;
 	private final int maxGrade;
 	private final int maxGroupSize;
-	
-	public ProfessorAssignment(int id, String title, String filename) {
-		this(id, title, filename, null, 0, 0);
-	}
-	
+	private final Date created;
+	private final Date deadline;
+
 	public ProfessorAssignment(int id, String title, User prof) {
-		this(id, title, null, prof, 0, 0);
+		this(id, title, null, prof, 0, 0, null, null);
+	}
+
+	public ProfessorAssignment(int id, String title, String filename, Date created, Date deadline) {
+		this(id, title, filename, null, 0, 0, created, deadline);
 	}
 	
-	public ProfessorAssignment(int id, String title, String filename, User prof, int maxGrade, int maxGroupSize) {
+	public ProfessorAssignment(int id, String title, String filename, User prof, int maxGrade, int maxGroupSize, Date created, Date deadline) {
 		this.id = id;
 		this.title = title;
 		this.filename = filename;
 		this.prof = prof;
 		this.maxGrade = maxGrade;
 		this.maxGroupSize = maxGroupSize;
+		this.created = created;
+		this.deadline = deadline;
 	}
 
 	public int getId() {
@@ -42,5 +48,11 @@ public class ProfessorAssignment {
 	}
 	public int getMaxGroupSize() {
 		return maxGroupSize;
+	}	
+	public Date getCreated() {
+		return created;
+	}
+	public Date getDeadline() {
+		return deadline;
 	}
 }
